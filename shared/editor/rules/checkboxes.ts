@@ -22,15 +22,34 @@ function isListItem(token: Token): boolean {
   return !!token && token.type === "list_item_open";
 }
 
+/**
+ * Whether the token opens a list. Lists already converted to a checklist are
+ * included so that searches for the enclosing list stop at the correct list
+ * rather than walking past it to a neighbouring list at the same level.
+ *
+ * @param token the token to check.
+ * @returns true if the token opens a bullet, ordered or checklist.
+ */
 function isListOpen(token: Token): boolean {
   return (
-    token.type === "bullet_list_open" || token.type === "ordered_list_open"
+    token.type === "bullet_list_open" ||
+    token.type === "ordered_list_open" ||
+    token.type === "checkbox_list_open"
   );
 }
 
+/**
+ * Whether the token closes a list. Lists already converted to a checklist are
+ * included so that searches for the enclosing list stop at the correct list.
+ *
+ * @param token the token to check.
+ * @returns true if the token closes a bullet, ordered or checklist.
+ */
 function isListClose(token: Token): boolean {
   return (
-    token.type === "bullet_list_close" || token.type === "ordered_list_close"
+    token.type === "bullet_list_close" ||
+    token.type === "ordered_list_close" ||
+    token.type === "checkbox_list_close"
   );
 }
 

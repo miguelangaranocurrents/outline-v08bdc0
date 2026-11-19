@@ -362,23 +362,30 @@ function MultiplayerEditor(
           ref={ref}
         />
       )}
-      <Editor
-        {...props}
-        readOnly={props.readOnly || editorVersionBehind}
-        value={undefined}
-        defaultValue={undefined}
-        extensions={extensions}
-        ref={showCache ? undefined : ref}
-        style={
-          showCache
-            ? {
-                height: 0,
-                opacity: 0,
-              }
-            : undefined
-        }
-        className={showCursorNames ? "show-cursor-names" : undefined}
-      />
+      {/* The live editor is kept mounted while the cache is shown, so it is hidden from
+      assistive technology to avoid exposing the same content twice. */}
+      <div
+        aria-hidden={showCache || undefined}
+        style={{ display: "contents" }}
+      >
+        <Editor
+          {...props}
+          readOnly={props.readOnly || editorVersionBehind}
+          value={undefined}
+          defaultValue={undefined}
+          extensions={extensions}
+          ref={showCache ? undefined : ref}
+          style={
+            showCache
+              ? {
+                  height: 0,
+                  opacity: 0,
+                }
+              : undefined
+          }
+          className={showCursorNames ? "show-cursor-names" : undefined}
+        />
+      </div>
     </>
   );
 }
